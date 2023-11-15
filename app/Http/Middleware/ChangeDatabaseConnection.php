@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use App\DepartamentoUser;
+use App\User;
+use Closure;
+use Illuminate\Support\Facades\DB;
+
+class ChangeDatabaseConnection
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    
+    /*public function handle($request, Closure $next, $guard = null)
+    {
+        if (auth()->check()) {
+            $user = auth()->user();
+            $dep = $user->dep;
+            if ($dep && in_array($dep->sigla, ['PO', 'SU', 'Tj', 'LP', 'CB', 'OR', 'SC', 'PA', 'BE'])) {
+                $databaseConnection = "departamento_" . strtolower($dep->sigla);
+                config(['database.default' => $databaseConnection]);
+                DB::reconnect();
+            }
+        }
+        return $next($request);
+    }
+    */
+
+    public function handle($request, Closure $next, $guard = null)
+    {
+        if (auth()->check()) {
+            $user = auth()->user();
+            $dep = $user->dep;
+            if ($dep && in_array($dep->sigla, ['PO', 'SU', 'Tj', 'LP', 'CB', 'OR', 'SC', 'PA', 'BE'])) {
+                $databaseConnection = "departamento_" . strtolower($dep->sigla);
+                config(['database.default' => $databaseConnection]);
+                DB::reconnect();
+                
+                // Agregar el ID del usuario a la sesión
+                session(['db' => $databaseConnection]);
+                // O agregar el ID del usuario al objeto Request
+                $request->merge(['db' => $databaseConnection]);
+            }
+        }
+        return $next($request);
+    }
+}
