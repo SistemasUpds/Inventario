@@ -21,6 +21,7 @@
     <link href="{{ asset('assets/vendor/quill/quill.bubble.css')}}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/remixicon/remixicon.css')}}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/simple-datatables/style.css')}}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!-- Template Main CSS File -->
     <link href="{{ asset('assets/css/style.css')}}" rel="stylesheet">
 </head>
@@ -100,6 +101,7 @@
             </div>
         </div>
     </main>
+    @yield('scripts')
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer">
         <div class="copyright">
@@ -107,6 +109,7 @@
         </div>
     </footer><!-- End Footer -->
     <!-- Vendor JS Files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js')}}"></script>
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{ asset('assets/vendor/chart.js/chart.min.js')}}"></script>
@@ -115,8 +118,7 @@
     <script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js')}}"></script>
     <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js')}}"></script>
     <script src="{{ asset('assets/vendor/php-email-form/validate.js')}}"></script>
-
     <!-- Template Main JS File -->
-    <script src="assets/js/main.js"></script>
+    <script src="{{ asset('assets/js/main.js')}}"></script>
 </body>
 </html>

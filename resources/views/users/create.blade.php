@@ -29,6 +29,19 @@
             <form action="{{ url('admin/users')}}" method="POST" role="form text-left">
                 {{ csrf_field() }}
                 <div class="form-floating mb-3">
+                    <select class="form-select" id="instituto" name="instituto" aria-label="Tipo de activo">
+                        <option value="u" selected>Universidad</option>
+                        <option value="i">Instituto</option>
+                        <option value="c">Colegio</option>
+                    </select>
+                    <label for="id_area">Institución</label>
+                    @if ($errors->has('instituto'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('instituto') }}</strong>
+                        </span>
+                    @endif
+                </div>
+                <div class="form-floating mb-3">
                     <select class="form-select" id="id_depart" name="id_depart" aria-label="Tipo de activo">
                     <option value="" selected disabled>Selecciona el Departamento</option>
                         @if( count($depat) > 0 )
@@ -87,5 +100,5 @@
         </div>
     </div>
 </section>
-
+<script src="{{ asset('js/login.js') }}"></script>
 @endsection

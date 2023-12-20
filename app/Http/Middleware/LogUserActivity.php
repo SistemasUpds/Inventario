@@ -20,13 +20,10 @@ class LogUserActivity
      */
     public function handle($request, Closure $next)
     {
-        $fechaActual = Carbon::now();
-        $databaseName = config('database.connections.' . config('database.default') . '.database');
         $response = $next($request);
         // Registra la actividad del usuario
         Actividad::create([
             'user_id' => auth()->id(), // ID del usuario actual
-            'fecha' => $fechaActual->format('Y-m-d H:i:s'),
             'action' => $request->getMethod(), // Método de la solicitud (GET, POST, etc.)
             'description' => self::getDescription($request), // URL completa de la solicitud
         ]);

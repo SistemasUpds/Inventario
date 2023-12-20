@@ -24,7 +24,6 @@ class SetDatabaseConnection
         // Configurar la conexión de base de datos según el departamento
         Config::set('database.default', $connection);
         DB::purge($connection);
-
         return $next($request);
     }
 }

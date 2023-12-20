@@ -32,6 +32,11 @@
               <i class="bi bi-collection"> Activo</i>
             </a>
           @endif
+          @if ($user->permiso->crear_item == 1)
+            <a class="btn btn-outline-secondary" href="{{ route('reporte.activos') }}">
+              <i class="bi bi-collection"> Reportes</i>
+            </a>
+          @endif
           <br>
           <br>
           @if( count($areas) > 0 )

@@ -12,60 +12,49 @@ use Illuminate\Support\Facades\DB;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
     use AuthenticatesUsers;
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
     protected $redirectTo = '/';
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+    
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
     }
     //$databaseName = config('database.connections.' . config('database.default') . '.database');
-    //dd($databaseName);
-
-
     public function login(Request $request)
     {
         $sigla = $request->input('departamento');
-
+        $instituto = $request->input('institucion');
         $userMain = User::where('email', $request->email)->first();
-        // Valida si el departamento es válido
-        if (in_array($sigla, ['PO', 'SU', 'Tj', 'LP', 'CB', 'OR', 'SC', 'PA', 'BE'])) {
-            $databaseConnection = "departamento_" . strtolower($sigla);
-            config(['database.default' => $databaseConnection]);
-            DB::reconnect();
-            //$databaseName = config('database.connections.' . config('database.default') . '.database');
-            $userDepartment = User::where('email', $request->email)->first();
-            if ($userDepartment) {
-                if ($userDepartment->email == $userMain->email && password_verify($request->password, $userDepartment->password) && password_verify($request->password, $userMain->password)) {
-                    Auth::loginUsingId($userMain->id);
-                    return redirect('/');
+        if ($userMain) {
+            if (in_array($sigla, ['PO', 'SU', 'TJ', 'LP', 'CB', 'OR', 'SC', 'PA', 'BE']) && in_array($instituto, ['U', 'I', 'C']) ) {
+                $databaseConnection = "departamento_" . strtolower($sigla);
+                if ($instituto !== 'U') {
+                    $databaseConnection .= '_'. strtolower($instituto);
                 }
-                return back()->with('success', 'Credenciales inválidas');
-            } else {
-                return back()->with('success', 'El correo no existe');
+                try {
+                    DB::connection($databaseConnection)->getPdo();
+            
+                    config(['database.default' => $databaseConnection]);
+                    DB::reconnect();
+                    $userDepartment = User::where('email', $request->email)->first();
+                    if ($userDepartment) {
+                        if ($userDepartment->email == $userMain->email && password_verify($request->password, $userDepartment->password) && password_verify($request->password, $userMain->password)) {
+                            Auth::loginUsingId($userMain->id);
+                            return redirect('/');
+                        }
+                        return back()->with('success', 'Credenciales inválidas');
+                    } else {
+                        return back()->with('success', 'El correo no existe');
+                    }
+                } catch (\Exception $e) {
+                    // La conexión no existe
+                    return back()->with('success', 'La base de datos no existe');
+                }
             }
+            return back()->with('success', 'Credenciales inválidas o Departamento no válido');
+        } else {
+            return back()->with('success', '¡No existe el correo!');
         }
-        return back()->with('success', 'Credenciales inválidas o departamento no válido');
     }
 }

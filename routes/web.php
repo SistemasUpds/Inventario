@@ -7,7 +7,6 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 
-
 Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function () {
     Route::get('/area/create', ['uses' => 'AreaController@create']);
     Route::post('/area',['uses' => 'AreaController@store'])->middleware('control');
@@ -60,6 +59,10 @@ Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'admin'], function 
     Route::post('/otro/material{id}', ['uses' => 'ItemController@updateMaterial'])->middleware('control');
     Route::get('/otro/material{id}/show', ['uses' => 'ItemController@showMaterial']);
     Route::get('/otro/material/descargar{id}', ['uses' => 'ItemController@descargarMaterial'])->middleware('control');
+    Route::get('/reportes', ['uses' => 'HomeController@reportesActivos'])->name('reporte.activos')->middleware('control');
+    Route::post('/buscar.activos', ['uses' => 'HomeController@selectActivos'])->name('search.activos')->middleware('control');
+    Route::post('/resultados.activos', ['uses' => 'HomeController@mostrarResultados'])->name('buscar.activo.reporte')->middleware('control');
+    Route::get('/resultados.descargar', ['uses' => 'HomeController@descargarResultados'])->name('descargar.resultados')->middleware('control');
 });
 
 Route::get('/vistaQR/{id}/{sigla?}', ['uses' => 'ItemController@vistaQR']);

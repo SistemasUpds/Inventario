@@ -411,3 +411,18 @@ fieldset {
 .button:focus {
   outline: none;
 }
+
+@import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
+      *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+      }
+      .alert{
+        width:50%;
+        margin:20px auto;
+        padding:30px;
+        position:relative;
+        border-radius:5px;
+        box-shadow:0 0 15px 5px #ccc;
+      }

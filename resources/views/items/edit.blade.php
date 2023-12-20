@@ -89,14 +89,27 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group col-sm-6">
+                                    <label class="form-label">Horario:</label>
+                                    <select class="selectpicker form-control" data-style="py-0" name="horario" required>
+                                        <option value="" disabled selected>Seleccionar</option>
+                                        @if ($horarios->count() > 0)
+                                            @foreach ($horarios as $mod)
+                                                <option value="{{ $mod->id }}">{{ $mod->turno }}</option>
+                                            @endforeach
+                                        @else
+                                            <option value="">No Hay Horarios</option>
+                                        @endif
+                                    </select>
+                                </div>
                                 <div class="form-floating mb-3">
                                     <select class="form-select" id="id_estado" name="id_estado" aria-label="Centro de Analisis">
                                     <option value="" selected disabled>Estado del Activo</option>
                                         @if( count($estados) > 0 )
                                             @foreach( $estados as $collection )
                                                 @if ( $collection->id == old('id_estado') )
-                                                <option value="{{$collection->id}}">{{$collection->estado}}</option>
-                                                @elseif ( $collection->id == $item->centro_id && old('id_estado') === null )
+                                                    <option value="{{$collection->id}}">{{$collection->estado}}</option>
+                                                @elseif ( $collection->id == $item->estado_id && old('id_estado') === null )
                                                     <option value="{{$collection->id}}" selected>{{$collection->estado}}</option>
                                                 @else
                                                     <option value="{{$collection->id}}">{{$collection->estado}}</option>

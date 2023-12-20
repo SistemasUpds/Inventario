@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('estado', 5)->default('A');
             $table->string('tipo_user')->default('0');
             $table->unsignedBigInteger('dep_id');
+            $table->string('instituto', 10)->default('u');
             $table->rememberToken();
             $table->timestamps();
         });
